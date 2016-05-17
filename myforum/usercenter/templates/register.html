@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="{% url 'block_list' %}">主页</a>
+
+<div class="alert alert-info">{{ error }} </div>
+
+<form method="POST" action="">{% csrf_token %}
+    <div class="col-xs-3">
+        &nbsp;
+    </div>
+    <div class="col-xs-6">
+
+        <div class="input-group">
+            <span class="input-group-addon">用户名</span>
+            <input type="text" class="form-control" name="usename" value="{{usename}}">
+        </div>
+
+        <br/>
+
+        <div class="input-group">
+            <span class="input-group-addon">邮&nbsp;&nbsp;&nbsp;箱</span>
+            <input type="email" class="form-control" name="emailid" value="{{emailid}}" >
+        </div>
+
+        <br/>
+
+        <div class="input-group">
+            <span class="input-group-addon">密&nbsp;&nbsp;&nbsp;码</span>
+            <input type="password" class="form-control" name="password" value="">
+        </div>
+
+        <br/>
+
+        <div class="input-group">
+            <span class="input-group-addon" >确认密码</span>
+            <input type="password" class="form-control" name="repassword" value="">
+        </div>
+
+        <br/>
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <a href="{% url 'login' %}">已有账号? 去登录</a>
+            </div>
+            <div class="col-md-1 col-md-offset-6">
+                <button type="submit" class="btn btn-default">注册</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        &nbsp;
+    </div>
+</form>
+{% endblock %}

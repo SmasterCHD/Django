@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'block_list' %}">主页</a></li>
+    <li><a href="{% url 'article_list' art.block.id %}">{{ art.block }}</a></li>
+    <li class="active">{{ art.title }}</li>
+</ol>
+
+<div class="media">
+    <div class="media-left media-middle">
+           &nbsp;
+    </div>
+    <div class="media-body">
+        <h3 class="media-heading">{{ art.title }}</h3>
+        <h4>跟新时间 {{ art.last_update_timestamp }}</h4>
+        <br/>
+        <p>{{ art.content }}</p>
+    </div>
+</div>
+{% endblock %}
