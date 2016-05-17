@@ -1,1 +1,1 @@
-# Django
+# Django ังฯฐำรpythonะดยÛฬณอ๘ีพ
