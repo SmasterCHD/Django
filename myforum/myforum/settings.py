@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from secret import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -59,19 +60,10 @@ ROOT_URLCONF = 'myforum.urls'
 LOGIN_REDIRECT_URL ="/"
 
 #邮件配置
-'''
-EMAIL_HOST = 'smtp.gmail.com'                   #SMTP地址
-EMAIL_PORT = 25                                 #SMTP端口
-EMAIL_HOST_USER = '493992398@qq.com'       #我自己的邮箱
-EMAIL_HOST_PASSWORD = 'Caoheng123'                  #我的邮箱密码
-EMAIL_SUBJECT_PREFIX = u'[CoorCar网]'            #为邮件Subject-line前缀,默认是'[django]'
-EMAIL_USE_TLS = True
-'''
+
 EMAIL_USE_SSL = True
 EMAIL_HOST = "smtp.qq.com"
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "493992398@qq.com"
-EMAIL_HOST_PASSWORD = "ejruqlyknbibbgci"
 DEFAULT_FROM_EMAIL = "ch"
 
 
