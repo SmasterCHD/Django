@@ -1,0 +1,1 @@
+COM_CNT_PER_PAGE = 10

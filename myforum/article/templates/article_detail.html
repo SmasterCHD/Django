@@ -7,14 +7,101 @@
 </ol>
 
 <div class="media">
-    <div class="media-left media-middle">
-           &nbsp;
-    </div>
+
     <div class="media-body">
         <h3 class="media-heading">{{ art.title }}</h3>
         <h4>跟新时间 {{ art.last_update_timestamp }}</h4>
         <br/>
-        <p>{{ art.content }}</p>
+        <p>{{ art.content|linebreaksbr }}</p>
+    </div>
+
+    <a href="#commentContent" class="btn btn-primary pull-right subCommentBtn"
+       data-comment-id="{{ '0' }}"data-owner="{{ '文章' }}">回复</a>
+
+</div>
+ <br/>
+<ol class="breadcrumb">
+    <li>评论</li>
+</ol>
+
+{% for comment in comments %}
+<div {% if forloop.last %}id="lastComment"{% endif %} class="media">
+    <div class="media-left media-middle">
+           &nbsp;
+    </div>
+    <div class="media-body" id="comment_id{{ comment.id }}">
+        {% with comment.to_comment as to_comment %}
+            {% if to_comment %}
+                <blockquote>
+                    <p style="font-size:15px;">{{ to_comment.owner.username }}: </p>
+                    <p style="font-size:15px;">{{ to_comment.content|linebreaksbr }}</p>
+                </blockquote>
+            {% endif %}
+        {% endwith %}
+        <h4 class="media-heading">{{ comment.owner }}</h4>
+        <h5>评论时间 {{ comment.last_update_timestamp }}</h5>
+        <br/>
+
+        <p>{{ comment.content|linebreaksbr }}</p>
+    </div>
+    <a href="#commentContent" class="btn btn-primary pull-right subCommentBtn"
+       data-comment-id="{{ comment.id }}"data-owner="{{ comment.owner.username }}">回复</a>
+</div>
+<hr/>
+{% endfor %}
+
+{% if user.is_authenticated %}
+
+<div class="form-group">
+    <label for="commentContent" class="col-sm-1 control-label-left">内容</label>
+    <div class="col-sm-11">
+
+      <textarea  class="form-control" id="commentContent" name="content"
+                 style=" height:120px">{{content}}</textarea>
+    </div>
+
+    <div class="col-sm-offset-1 col-sm-11">
+        <br/>
+        <button id="commentBtn" class="btn btn-default">发表</button>
     </div>
 </div>
+
+{% endif %}
+
+{% include "component/paginator.html" with param_name="comment_page_no" %}
+
+<script src="/static/lib/jquery/jquery-1.12.4.min.js"></script>
+<script src="/static/lib/jquery/jquery.csrf.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    if(window.location.href.indexOf("goLast") > 0){
+        window.location.href = window.location.href + "#lastComment";
+    }
+
+    var article_id = {{ art.id }};
+    var to_comment_id = 0;
+    var page_cnt = {{ pagination.page_cnt }};
+
+
+
+    $("#commentBtn").click(function () {
+    var comment = $("#commentContent").val();
+    var param = {"article_id": article_id, "to_comment_id": to_comment_id, "content": comment};
+    $.post("{% url 'comment_create' %}", param, function () {
+      $("#commentContent").val("");
+      window.location.href = "{% url 'article_detail' art.id %}?comment_page_no=" + (page_cnt + 1) + "&goLast=1";
+    });
+    })
+
+    $(".subCommentBtn").click(function (e) {
+    var btn = $(e.target);
+    to_comment_id = parseInt(btn.attr("data-comment-id"));
+    $("#commentContent").attr("placeholder","回复:" + btn.attr("data-owner"));
+    $("#commentContent").focus();
+    return false;
+    })
+
+});
+</script>
+
 {% endblock %}
